@@ -384,4 +384,31 @@ create-react-app提供的工具默认是预先配置好的，我们需要进行 
     export default BasicExample
 ```
 
+主要使用的组件为 `<Router>`， `<Route>`， `<Link>`，`<Switch>`
 
+### `<Router>`
+
+父组件，用来包裹所有不同路由对应的子组件，只能含有一个子元素
+
+### `<Link>`
+
+跳转到对应的路由
+
+### `<Route>`
+
+当路由匹配时，渲染对应的组件  
+三种方式渲染子组件：属性`component`，`render`，`children`，子组件会获得 `match`，`location`，`history` 三个属性
+
+属性：  
+- path：string，对应的路由
+- component：React Element，路由匹配时渲染的组件
+- render：func，路由匹配时调用该函数
+- children：func，无论路由是否匹配，都调用该函数，参数对象props中的match属性在未匹配时为null
+
+### <Switch>
+
+用 `<Switch>` 包裹一组 `<Route>`，这样只会渲染匹配到的第一个 `<Route>`，否则的话其它未匹配的 `<Route>` 仍会渲染一个 `null`
+
+[react-router详细文档](https://reacttraining.com/react-router/web)
+
+配合react-router，可以使一个js文件供一组页面使用，okex使用此方法将前端拆分为多个子模块如 `account`，`fiat`，`spot`，便于开发和维护
