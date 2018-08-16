@@ -3,19 +3,22 @@
 React可以不使用构建工具[直接以script标签引用](https://reactjs.org/docs/add-react-to-a-website.html#add-react-in-one-minute)，[JSX语法也不是必选项](https://reactjs.org/docs/add-react-to-a-website.html#optional-try-react-with-jsx)。
 
 推荐使用的React项目工具链：
+
 - 学习React或创建一个单页应用，使用 **[Create React App](https://reactjs.org/docs/create-a-new-react-app.html#create-react-app)**
 - 创建一个Node.js的服务端渲染的网站，推荐[Next.js](https://reactjs.org/docs/create-a-new-react-app.html#nextjs)
 - 创建一个静态内容网站，推荐[Gatsby](https://reactjs.org/docs/create-a-new-react-app.html#gatsby)
 - 构建一个组件库或者与现有的代码做集成，推荐[更加灵活的工具链](https://reactjs.org/docs/create-a-new-react-app.html#more-flexible-toolchains)
 
 自已从头创建工具链的话，一般包含以下部分：
+
 - 包管理器：[Yarn](https://yarnpkg.com/)或[npm](https://www.npmjs.com/)，可以使用丰富的第三方库，便于第三方库的安装和升级
 - 打包器：[webpack](https://webpack.js.org/)或[Parcel](https://parceljs.org/)之类，可以让你书写模块化的代码，并打包在一起优化加载时间
-- 编译器: [Babel](http://babeljs.io/)，可以让你书写现代化的JavaScript代码，并依然能在旧的浏览器里运行
+- 编译器：[Babel](http://babeljs.io/)，可以让你书写现代化的JavaScript代码，并依然能在旧的浏览器里运行
 
 这里使用Create React App来构建React应用
 
 ## Create React App
+
 Create React App是官方推荐的学习React和构建单页应用的工具
 
     npx create-react-app my-app
@@ -53,11 +56,11 @@ my-app内部结构为：
 
 进入my-app项目路径下后  
 
-    npm run start
+    npm start
 
 app就会以开发模式运行于[http://localhost:3000](http://localhost:3000/)
 
-    npm run test
+    npm test
 
 [运行测试](https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#running-tests)
 
@@ -68,6 +71,7 @@ app就会以开发模式运行于[http://localhost:3000](http://localhost:3000/)
 React默认支持所有流行的浏览器，包含IE9及以上，[部分功能需要polyfills](https://reactjs.org/docs/javascript-environment-requirements.html)
 
 create-react-app创建的项目包含以下功能：
+
 - React，JSX，ES6，Flow语法支持
 - ES6以外的语法支持，如对象展开符
 - 自动对CSS增加前缀，你不再需要 `-webkit-` 或者其他前缀修饰
@@ -119,14 +123,18 @@ create-react-app提供的工具默认是预先配置好的，我们需要进行 
     npm install antd --save
 
 在`index.js`中就可以使用antd了：
+
 ```js
     import { DatePicker } from 'antd';
     ReactDOM.render(<DatePicker />, mountNode);
 ```
+
 引入样式：
+
 ```js
     import 'antd/dist/antd.css';  // or 'antd/dist/antd.less'
 ```
+
 ### 按需加载
 
 如果你在开发环境的控制台看到下面的提示，那么你可能使用了 `import { Button } from 'antd';` 的写法引入了 antd 下所有的模块，这会影响应用的网络性能。
@@ -147,6 +155,7 @@ create-react-app提供的工具默认是预先配置好的，我们需要进行 
     }]
 
 更改后，处理 js 文件的 `loader` 类似如下：
+
 ```js
     // Process JS with Babel.
     {
@@ -165,14 +174,17 @@ create-react-app提供的工具默认是预先配置好的，我们需要进行 
         },
     }
 ```
+
 `/config/webpack.config.prod.js` 中也做相同处理
 
 [babel-plugin-import详细文档](https://github.com/ant-design/babel-plugin-import)
 
 然后只需从 antd 引入模块即可，无需单独引入样式：
 
+```js
     // babel-plugin-import 会帮助你加载 JS 和 CSS
     import { DatePicker } from 'antd';
+```
 
 ## 热模块替换HMR
 
@@ -181,6 +193,7 @@ create-react-app提供的工具默认是预先配置好的，我们需要进行 
     npm install --save-dev react-hot-loader
 
 在 `config/webpack.config.dev.js` 中，Babel loader 配置中增加 `'react-hot-loader/babel'` ，增加后 `loader` 配置类似如下：
+
 ```js
     // Process JS with Babel.
     {
@@ -200,7 +213,9 @@ create-react-app提供的工具默认是预先配置好的，我们需要进行 
         },
     }
 ```
+
 然后把根组件 `(src/index.js)` 标记为 *hot-exported* ：
+
 ```js
     // ./containers/App.js
     import React from 'react'
@@ -210,6 +225,7 @@ create-react-app提供的工具默认是预先配置好的，我们需要进行 
     
     export default hot(module)(App)
 ```
+
 现在你就可以在开发模式下热重载所有组件了
 
 [React Hot Loader文档](https://www.npmjs.com/package/react-hot-loader)
@@ -251,13 +267,15 @@ create-react-app提供的工具默认是预先配置好的，我们需要进行 
 
 ### 生成的图片文件
 
-`npm run build` 后会在 /build 文件加下生成用于生产环境的文件，默认的图片文件 `[/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/]` 会使用 url-loader 处理，当图片小于10000 bytes时，会返回一个DataURL，大于10000 bytes时，会使用 file-loader 处理图片，图片的引用路径默认为 `/static/media/[name].[hash:8].[ext]` ，要更改此配置，需要在 file-loader 中配置
+`npm run build` 后会在 /build 文件加下生成用于生产环境的文件，默认的图片文件 `[/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/]` 会使用 url-loader 处理，当图片小于10000 bytes时，会返回一个DataURL，大于10000 bytes时，会使用 file-loader 处理图片，图片的引用路径默认为 `/static/media/[name].[hash:8].[ext]` ，要更改此配置，需要在 file-loader 中配置：
 
+```js
     options: {
         name: '[name].[hash:8].[ext]',
         publicPath: 'http://a.f265.com/project/canon-chain-manager/img/'
     }
-    
+```
+
 这样输出的代码中引用图片的位置就是 `http://a.f265.com/project/canon-chain-manager/img/[name].[hash:8].[ext]`
 
 [url-loader文档](https://webpack.docschina.org/loaders/url-loader)  
@@ -267,39 +285,51 @@ create-react-app提供的工具默认是预先配置好的，我们需要进行 
 
 默认构建好的js和css以 `main.[hash:8]` 命名，要更改的话，需要配置 entry ，默认为
 
+```js
     entry: [require.resolve('./polyfills'), paths.appIndexJs]
+```
 
 把 entry 更改为一个对象：
 
+```js
     entry: {
         login: [require.resolve('./polyfills'), paths.appIndexJs]
     }
+```
 
 这样打包好的js、css文件就会以 `login.[hash:8]` 命名
 
 如果在测试环境上不想使用带文件版本号(`[hash:8]`)的文件，可以在 `webpack.config.prod.js` 中找到
+
 ```js
     const cssFilename = 'static/css/[name].[contenthash:8].css';
 ```
+
 更改为
+
 ```js
     const cssFilename = 'static/css/[name].css';
 ```
+
 在 `output.filename` 和 `output.chunkFilename` 中去掉 `[chunkhash:8]`
 
+```js
     output: {
         // ...
         filename: 'static/js/[name].[chunkhash:8].js',
         chunkFilename: 'static/js/[name].[chunkhash:8].chunk.js',
     }
+```
 
 改为：
 
+```js
     output: {
         // ...
         filename: 'static/js/[name].js',
         chunkFilename: 'static/js/[name].chunk.js',
     }
+```
 
 ## 路由 react-router
 
@@ -310,6 +340,7 @@ create-react-app提供的工具默认是预先配置好的，我们需要进行 
     npm install react-router-dom --save
 
 基础案例：
+
 ```js
     import React from 'react'
     import {
@@ -396,10 +427,12 @@ create-react-app提供的工具默认是预先配置好的，我们需要进行 
 
 ### `<Route>`
 
-当路由匹配时，渲染对应的组件  
+当路由匹配时，渲染对应的组件
+
 三种方式渲染子组件：属性`component`，`render`，`children`，子组件会获得 `match`，`location`，`history` 三个属性
 
-属性：  
+属性：
+
 - path：string，对应的路由
 - component：React Element，路由匹配时渲染的组件
 - render：func，路由匹配时调用该函数
