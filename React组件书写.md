@@ -212,7 +212,54 @@ rc-form会传递子组件的引用，所以给添加的 `ref` 会自动传递到
 
 ## 子组件引用
 
+使用ref获取子组件的引用，在设置焦点、modal确定按钮提交内部表单等操作时非常必要。
 
+ref设置有2种语法：
+1. `React.createRef`
+
+```js
+class MyComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.myRef = React.createRef();
+  }
+  render() {
+    return <div ref={this.myRef} />;
+  }
+}
+```
+
+使用时：
+
+```js
+const node = this.myRef.current;
+```
+
+2. ref回调
+
+```js
+function CustomTextInput(props) {
+  return (
+    <div>
+      <input ref={props.inputRef} />
+    </div>
+  );
+}
+
+class Parent extends React.Component {
+  render() {
+    return (
+      <CustomTextInput
+        inputRef={el => this.inputElement = el}
+      />
+    );
+  }
+}
+```
+
+注意：
+- 在函数组件上不要使用`ref`属性，因为函数型组件没有实例
+- 如果使用行内`ref`回调设置`ref`，在组件更新时回调会调用2次，第一次为`null`，然后是DOM节点，这是因为每一次`render`都会创建一个新的实例，所以React需要清除旧的`ref`，再设置新的`ref`，可以通过类的绑定方法替换回调来避免这种情况的发生。
 
 ## 状态管理
 
@@ -229,6 +276,7 @@ Redux 是 JavaScript 状态容器，提供可预测化的状态管理。
 应用中所有的 state 都以一个对象树的形式储存在一个单一的 *store* 中。 惟一改变 state 的办法是触发 *action*，一个描述发生什么的对象。 为了描述 action 如何改变 state 树，你需要编写 *reducers*。
 
 例：
+
 ```js
 import { createStore } from 'redux';
 
